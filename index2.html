@@ -143,6 +143,44 @@
 
 </script>
 
+    <script>
+(function() {
+  const audio = document.getElementById("my_audio");
+  audio.volume = 1.0;
+
+  // Bước 1: đăng ký sự kiện user gesture
+  function initAudio() {
+    // Load file và play một lần ngắn (để Safari cho phép)
+    audio.load();
+    const playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        console.log("✅ Safari iOS đã cấp quyền phát nhạc.");
+        audio.pause();
+        audio.currentTime = 0; // quay về đầu
+        document.removeEventListener("click", initAudio);
+        document.removeEventListener("touchstart", initAudio);
+        startMusic(); // Bắt đầu phát nhạc thật
+      }).catch(err => {
+        console.warn("⚠️ Audio bị chặn, chờ click lại:", err);
+      });
+    }
+  }
+
+  // Bước 2: hàm phát nhạc thật
+  function startMusic() {
+    console.log("🎵 Bắt đầu phát nhạc chính.");
+    audio.play().catch(err => console.warn("Không phát được:", err));
+  }
+
+  // Gắn event để chỉ cần user chạm 1 lần
+  document.addEventListener("click", initAudio, { once: true });
+  document.addEventListener("touchstart", initAudio, { once: true });
+})();
+</script>
+
+
 </head>
 <body class="">
 <div class="ladi-wraper">
