@@ -11,8 +11,7 @@
     <script type="text/javascript">
         window.ladi_viewport=function(b){var a=document;b=b?b:'innerWidth';var c=window[b];var d=true;if(typeof window.ladi_is_desktop=="undefined"||window.ladi_is_desktop==undefined){window.ladi_is_desktop=!d;}var e=960;var f=420;var g='';if(!d){g="width="+e+",user-scalable=no,initial-scale=1.0";}else{var h=1;var i=f;if(i!=c){h=c / i;}g="width="+i+",user-scalable=no,initial-scale="+h+",minimum-scale="+h+",maximum-scale="+h;}var j=a.getElementById("viewport");if(!j){j=a.createElement("meta");j.id="viewport";j.name="viewport";a.head.appendChild(j);}j.setAttribute("content",g);};window.ladi_viewport();window.ladi_fbq_data = [];window.ladi_fbq = function () {window.ladi_fbq_data.push(arguments);};window.ladi_ttq_data = [];window.ladi_ttq = function () {window.ladi_ttq_data.push(arguments);};
     </script>
-    <meta id="viewport" name="viewport"
-          content="width=420,user-scalable=no,initial-scale=4.571428571428571,minimum-scale=4.571428571428571,maximum-scale=4.571428571428571">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="canonical" href="https://camcui.vn/anhquan">
     <meta property="og:url" content="https://camcui.vn/anhquan">
     <meta property="og:title" content="Huyền Linh &amp; Đình Hiếu">
@@ -73,6 +72,67 @@
             audio.play();
         });
     </script>
+<script>
+(function() {
+  function removeWatermark() {
+    document.querySelectorAll("body > div").forEach(el => {
+      const style = window.getComputedStyle(el);
+      const bg = style.backgroundImage || "";
+      const pos = style.position;
+      const zi = parseInt(style.zIndex) || 0;
+      const w = parseFloat(style.width);
+      const h = parseFloat(style.height);
+
+      // Điều kiện watermark đặc trưng
+      const isWatermark =
+        pos === "fixed" &&
+        bg.includes("ladicdn.com/source") &&
+        zi > 9999999 &&
+        w <= 300 &&
+        h <= 100;
+
+      if (isWatermark) {
+        console.log("🧹 Xóa watermark LadiPage:", el.className);
+        el.remove();
+      }
+    });
+  }
+
+  // Xóa sau khi trang load
+  window.addEventListener("load", () => {
+    removeWatermark();
+    // Lặp lại để diệt watermark chèn trễ
+    const interval = setInterval(removeWatermark, 1000);
+    setTimeout(() => clearInterval(interval), 10000);
+  });
+
+  // Theo dõi DOM realtime
+  const obs = new MutationObserver(muts => {
+    muts.forEach(m => m.addedNodes.forEach(n => {
+      if (n.nodeType === 1 && n.tagName === "DIV") {
+        const style = window.getComputedStyle(n);
+        const bg = style.backgroundImage || "";
+        const pos = style.position;
+        const zi = parseInt(style.zIndex) || 0;
+        const w = parseFloat(style.width);
+        const h = parseFloat(style.height);
+        if (
+          pos === "fixed" &&
+          bg.includes("ladicdn.com/source") &&
+          zi > 9999999 &&
+          w <= 300 &&
+          h <= 100
+        ) {
+          console.log("⚡ Phát hiện watermark mới, xoá:", n.className);
+          n.remove();
+        }
+      }
+    }));
+  });
+  obs.observe(document.body, { childList: true });
+})();
+</script>
+
 </head>
 <body class="">
 <div class="ladi-wraper">
