@@ -137,6 +137,10 @@
   });
   obs.observe(document.body, { childList: true });
 })();
+    window.onload = function() {
+    document.getElementById("my_audio").play();
+}
+
 </script>
 
 </head>
@@ -812,6 +816,8 @@
 <!--                    </div>-->
 <!--                </div>-->
 <!--            </div>-->
+            <audio id="my_audio" src="./img/music.mp3" loop="loop"></audio>
+
         </div>
     </div>
     <div id="SECTION_POPUP" class="ladi-section">
