@@ -180,6 +180,18 @@
 })();
 </script>
 
+    <script>
+window.addEventListener("touchstart", function initAudio() {
+  const audio = document.getElementById("my_audio");
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const source = ctx.createMediaElementSource(audio);
+  source.connect(ctx.destination);
+  ctx.resume().then(() => audio.play());
+  window.removeEventListener("touchstart", initAudio);
+});
+</script>
+
+
 
 </head>
 <body class="">
