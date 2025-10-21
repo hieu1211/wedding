@@ -77,9 +77,31 @@
     });
   }
 
+  function __phamngocsonmedia() {
+            phamngocsonmediasound__();
+    }
+    //Random music
+    let index2 = Math.floor(Math.random() * phamngocsonmedia_List.length);
+    const audio2 = new Audio(phamngocsonmedia_List[index]);
+
+    function phamngocsonmediasound__() {
+        if (audio.muted || audio.volume === 0) {
+            audio2.play();
+        }
+
+    }
+    document.addEventListener("click", phamngocsonmediasound__);
+    audio2.addEventListener("ended", function() {
+        index = (index + 1) % phamngocsonmedia_List.length;
+        audio2.src = phamngocsonmedia_List[index2];
+        audio2.play();
+    });
+
   window.addEventListener("load", startAudio);
 })();
 </script>
+
+
 
 <script>
 (function() {
